@@ -1,0 +1,4 @@
+enum MeasureType {
+    SECONDS,
+    REPEATS
+}
