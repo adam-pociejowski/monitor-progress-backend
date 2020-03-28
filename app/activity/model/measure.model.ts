@@ -1,3 +1,5 @@
+import { MeasureType } from "./measure.type.enum";
+
 export class Measure {
     type: MeasureType;
     value: number;

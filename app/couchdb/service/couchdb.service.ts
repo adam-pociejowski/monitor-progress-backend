@@ -1,5 +1,5 @@
-import {CouchDbDocumentModel} from "../model/couchdb.document.model";
-import {DocumentType} from "../model/document.type.enum";
+import { CouchDbDocumentModel } from "../model/couchdb.document.model";
+import { DocumentType } from "../model/document.type.enum";
 
 const db = require('../../couchdb/config/couchdb.config');
 
@@ -45,7 +45,7 @@ export abstract class CouchDbService<T> {
                         .docs
                         .map((doc: any) => new CouchDbDocumentModel<T>(doc._id, doc._rev, doc.value)));
 
-    generateUniqueId = (): Promise<string[]> =>
+    generateUniqueId = () =>
         this
             .couchDb
             .uniqid();

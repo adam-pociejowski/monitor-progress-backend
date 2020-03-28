@@ -1,9 +1,9 @@
-import {Measure} from "./measure.model";
+import { Measure } from "./measure.model";
 
 export class Activity {
     name: string;
     datetime: string;
-    type: ActivityType;
+    type: string;
     measure: Measure;
     fitnessPoints: number = 0;
     metadata: any;

@@ -12,7 +12,7 @@ router.get('/older/:limit/:previous', function (req: Request, res: Response) {
     activityService
         .findOlderDocuments(req.params.previous, req.params.limit)
         .then((activities: CouchDbDocumentModel<Activity>[]) => {
-            res.send(activities);
+            res.send(activityService.calculateFitnessPoints(activities));
         })
         .catch((error: any) => {
             res.status(500);

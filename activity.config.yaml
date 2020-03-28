@@ -1,0 +1,16 @@
+
+- name: PULL_UP
+  measureType: REPEATS
+  fitnessPointsFactor: 5
+- name: PUSH_UP
+  measureType: REPEATS
+  fitnessPointsFactor: 1.5
+- name: STRETCHING
+  measureType: SECONDS
+  fitnessPointsFactor: 0.1
+- name: CYCLING
+  measureType: SECONDS
+  fitnessPointsFactor: 0.1
+- name: RUNNING
+  measureType: SECONDS
+  fitnessPointsFactor: 0.1

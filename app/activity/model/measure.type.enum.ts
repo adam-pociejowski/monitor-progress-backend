@@ -1,4 +1,4 @@
-enum MeasureType {
+export enum MeasureType {
     SECONDS,
     REPEATS
 }
