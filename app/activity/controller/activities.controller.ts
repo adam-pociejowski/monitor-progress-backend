@@ -1,7 +1,7 @@
 import {Request, Response} from "express";
 import { Activity } from '../model/activity.model';
 import { ActivityService } from '../service/activity.service';
-import {CouchDbDocumentModel} from "../model/couchdb.document.model";
+import {CouchDbDocumentModel} from "../../couchdb/model/couchdb.document.model";
 
 const express = require('express');
 const router = express.Router();

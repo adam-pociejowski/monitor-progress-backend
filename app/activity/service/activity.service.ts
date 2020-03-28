@@ -1,8 +1,7 @@
 import { Activity } from "../model/activity.model";
-import { CouchDbDocumentModel } from "../model/couchdb.document.model";
-var Rx = require('rxjs');
+import { CouchDbDocumentModel } from "../../couchdb/model/couchdb.document.model";
 
-const db = require('../configuration/couchdb.config');
+const db = require('../../couchdb/config/couchdb.config');
 
 export class ActivityService {
 
