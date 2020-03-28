@@ -1,10 +1,8 @@
 export class CouchDbDataModel {
-    ok: string;
     id: string;
     rev: string;
 
-    constructor(ok: string, id: string, rev: string) {
-        this.ok = ok;
+    constructor(id: string, rev: string) {
         this.id = id;
         this.rev = rev;
     }

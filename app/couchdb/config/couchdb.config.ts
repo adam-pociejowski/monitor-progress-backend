@@ -10,6 +10,6 @@ module.exports = {
             password: "password"
         }
     }),
-    dbname: "monitoring-progress-db",
+    activityDbName: "monitoring-progress-db",
     activities_view: "_design/all_tests/_view/all"
 };

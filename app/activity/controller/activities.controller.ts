@@ -1,28 +1,71 @@
-import {Request, Response} from "express";
+import { Request, Response } from "express";
 import { Activity } from '../model/activity.model';
 import { ActivityService } from '../service/activity.service';
-import {CouchDbDocumentModel} from "../../couchdb/model/couchdb.document.model";
+import { DocumentType } from "../../couchdb/model/document.type.enum";
+import { CouchDbDocumentModel } from "../../couchdb/model/couchdb.document.model";
 
 const express = require('express');
 const router = express.Router();
 const activityService = new ActivityService();
 
-router.get('/', function (req : Request, res : Response) {
-    console.log(req.query, req.query.page);
-    res.send('OK');
+router.get('/older/:limit/:previous', function (req: Request, res: Response) {
+    activityService
+        .findOlderDocuments(req.params.previous, req.params.limit)
+        .then((activities: CouchDbDocumentModel<Activity>[]) => {
+            res.send(activities);
+        })
+        .catch((error: any) => {
+            res.status(500);
+            res.send(error);
+        });
 });
 
-router.post('/', function (req : Request, res : Response) {
-    const activity = new Activity(req.body);
+router.get('/newer/:limit/:previous', function (req: Request, res: Response) {
     activityService
-        .insert(activity)
+        .findNewerDocuments(req.params.previous, req.params.limit)
+        .then((activities: CouchDbDocumentModel<Activity>[]) => {
+            res.send(activities);
+        })
+        .catch((error: any) => {
+            res.status(500);
+            res.send(error);
+        });
+});
+
+router.post('/', function (req: Request, res: Response) {
+    activityService
+        .insert(new Activity(req.body), DocumentType.ACTIVITY)
         .then((inserted: CouchDbDocumentModel<Activity>) => {
-            inserted.object = activity;
-            res.send({
-                data: inserted.data,
-                activity: inserted.object
-            });
-        }, (err: any) => res.send(err));
+            res.send(inserted);
+        })
+        .catch((error: any) => {
+            res.status(500);
+            res.send(error);
+        });
+});
+
+router.put('/', function (req: Request, res: Response) {
+    activityService
+        .update(new CouchDbDocumentModel<Activity>(req.body.id, req.body.rev, req.body.value))
+        .then((updated: CouchDbDocumentModel<Activity>) => {
+            res.send(updated);
+        })
+        .catch((error: any) => {
+            res.status(500);
+            res.send(error);
+        });
+});
+
+router.delete('/:id/:rev', function (req: Request, res: Response) {
+    activityService
+        .delete(req.params.id, req.params.rev)
+        .then((deleted: any) => {
+            res.send(deleted.data);
+        })
+        .catch((error: any) => {
+            res.status(500);
+            res.send(error);
+        });
 });
 
 module.exports = router;

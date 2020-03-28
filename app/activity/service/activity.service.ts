@@ -1,25 +1,12 @@
-import { Activity } from "../model/activity.model";
-import { CouchDbDocumentModel } from "../../couchdb/model/couchdb.document.model";
+import {Activity} from "../model/activity.model";
+import {CouchDbService} from "../../couchdb/service/couchdb.service";
 
-const db = require('../../couchdb/config/couchdb.config');
+export class ActivityService extends CouchDbService<Activity> {
+    private sortField: string = 'value.datetime';
 
-export class ActivityService {
+    findOlderDocuments = (previous: string, limit: number) =>
+        this.findNextDocuments(previous, this.sortField, 'desc', limit);
 
-    generateUniqueId(): Promise<string[]> {
-        return db
-            .connection
-            .uniqid();
-    }
-
-    insert(activity: Activity): Promise<CouchDbDocumentModel<Activity>> {
-        return this.generateUniqueId()
-            .then((ids: string[]) => {
-                return db
-                    .connection
-                    .insert(db.dbname, {
-                        _id: ids[0],
-                        activity: activity
-                    })
-            });
-    }
+    findNewerDocuments = (previous: string, limit: number) =>
+        this.findNextDocuments(previous, this.sortField, 'asc', limit);
 }
