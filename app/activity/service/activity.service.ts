@@ -8,12 +8,20 @@ import { CouchDbDocumentModel } from "../../couchdb/model/couchdb.document.model
 
 export class ActivityService extends CouchDbService<Activity> {
     private sortField: string = 'value.datetime';
-    private configMap: any;
+    private readonly configMap: any;
 
     constructor() {
         super();
         this.configMap = this.loadActivitiesConfigsFromFile();
     }
+
+    getConfigList = () => {
+        let configs = [];
+        for (let config in this.configMap) {
+            configs.push(this.configMap[config]);
+        }
+        return configs;
+    };
 
     findOlderDocuments = (previous: string, limit: number) =>
         this.findNextDocuments(previous, this.sortField, 'desc', limit);

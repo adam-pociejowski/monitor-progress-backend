@@ -8,6 +8,10 @@ const express = require('express');
 const router = express.Router();
 const activityService = new ActivityService();
 
+router.get('/config', function (req: Request, res: Response) {
+    res.send(activityService.getConfigList());
+});
+
 router.get('/older/:limit/:previous', function (req: Request, res: Response) {
     activityService
         .findOlderDocuments(req.params.previous, req.params.limit)
