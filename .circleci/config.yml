@@ -23,11 +23,14 @@ jobs:
           fingerprints:
             - "52:72:cc:59:c2:43:da:3f:18:b8:c5:92:de:89:ab:28"
       - run:
+          name: send-artifacts2
+          command: 'cat ~/.ssh/known_hosts'
+      - run:
           name: send-artifacts1
-          command: 'ls ~/.ssh/'
+          command: 'ssh-keyscan 188.68.242.244 >> ~/.ssh/known_hosts'
       - run:
           name: send-artifacts2
-          command: 'cat ~/.ssh/id_rsa_5272cc59c243da3f18b8c592de89ab28'
+          command: 'cat ~/.ssh/known_hosts'
       - run:
           name: send-artifacts
           command: 'scp -i ~/.ssh/id_rsa_5272cc59c243da3f18b8c592de89ab28 -r ./build valverde@188.68.242.244:'
