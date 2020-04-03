@@ -21,4 +21,4 @@ jobs:
             - "52:72:cc:59:c2:43:da:3f:18:b8:c5:92:de:89:ab:28"
       - run:
           name: send-artifacts
-          command: 'scp -r dist/ valverde@188.68.242.244:'
+          command: 'scp -o "StrictHostKeyChecking no" 188.68.242.244 -r dist/ valverde@188.68.242.244:'
