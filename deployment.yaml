@@ -1,0 +1,32 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: nodejs-backend
+  namespace: "monitoring-progress"
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nodejs-backend
+    spec:
+      containers:
+        - name: nodejs-backend
+          image: node:13
+          imagePullPolicy: "IfNotPresent"
+          ports:
+            - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nodejs-backend
+  namespace: "monitoring-progress"
+  labels:
+    app: nodejs-backend
+spec:
+  type: ClusterIP
+  ports:
+    - port: 3000
+  selector:
+    app: nodejs-backend

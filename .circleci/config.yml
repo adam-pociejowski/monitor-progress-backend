@@ -10,9 +10,17 @@ jobs:
          name: update-npm
          command: 'sudo npm install -g npm@latest'
       - run:
-          name: install-npm-wee
-          command: npm install
+         name: install-npm-wee
+         command: npm install
       - save_cache:
-          key: dependency-cache-{{ checksum "package-lock.json" }}
-          paths:
-            - ./node_module
+         key: dependency-cache-{{ checksum "package-lock.json" }}
+         paths:
+           - ./node_module
+  deploy-job:
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "52:72:cc:59:c2:43:da:3f:18:b8:c5:92:de:89:ab:28"
+      - send_artifacts:
+          name: send-artifacts
+          command: 'scp -r dist/ valverde@188.68.242.244:'
