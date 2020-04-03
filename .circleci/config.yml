@@ -16,9 +16,12 @@ jobs:
          key: dependency-cache-{{ checksum "package-lock.json" }}
          paths:
            - ./node_module
+      - run:
+          name: build-tsc
+          command: 'npm run tsc'
       - add_ssh_keys:
           fingerprints:
             - "52:72:cc:59:c2:43:da:3f:18:b8:c5:92:de:89:ab:28"
       - run:
           name: send-artifacts
-          command: 'scp -r ./dist valverde@188.68.242.244:'
+          command: 'scp -r ./build valverde@188.68.242.244:'
