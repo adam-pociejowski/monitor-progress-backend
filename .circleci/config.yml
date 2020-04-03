@@ -24,4 +24,7 @@ jobs:
             - "52:72:cc:59:c2:43:da:3f:18:b8:c5:92:de:89:ab:28"
       - run:
           name: send-artifacts
+          command: 'ls ~/.ssh/'
+      - run:
+          name: send-artifacts
           command: 'scp -r ./build valverde@188.68.242.244:'
