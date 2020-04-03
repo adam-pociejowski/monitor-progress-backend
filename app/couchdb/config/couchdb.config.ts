@@ -2,14 +2,13 @@ const NodeCouchDb = require('node-couchdb');
 
 module.exports = {
     connection: new NodeCouchDb({
-        host: 'plwrlxt-ecsdkr-3.kruk-inkaso.com.pl',
-        protocol: 'http',
-        port: 30367,
+        host: 'couchdb.valverde.duckdns.org',
+        protocol: 'https',
+        port: 443,
         auth: {
             user: "user",
             password: "password"
         }
     }),
-    activityDbName: "monitoring-progress-db",
-    activities_view: "_design/all_tests/_view/all"
+    activityDbName: "activities"
 };
