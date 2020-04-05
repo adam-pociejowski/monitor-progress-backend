@@ -43,10 +43,10 @@ jobs:
           command: echo $PRIVATE_KEY_FILENAME
       - run:
           name: Send configuration files to server
-          command: scp -i ~/.ssh/$PRIVATE_KEY_FILENAME -r ./k8s valverde@$MASTER_SERVER_URL:deploy/.
+          command: scp -i ~/.ssh/id_rsa_circleci_remote_docker_engine -r ./k8s valverde@$MASTER_SERVER_URL:deploy/.
       - run:
           name: Apply kubernetes configuration
-          command: ssh -i ~/.ssh/$PRIVATE_KEY_FILENAME valverde@$MASTER_SERVER_URL 'kubectl apply -f ./deploy/k8s'
+          command: ssh -i ~/.ssh/id_rsa_circleci_remote_docker_engine valverde@$MASTER_SERVER_URL 'kubectl apply -f ./deploy/k8s'
       - run:
           name: Remove kubernetes configuration file
-          command: ssh -i ~/.ssh/$PRIVATE_KEY_FILENAME valverde@$MASTER_SERVER_URL 'rm -r ./deploy/k8s'
+          command: ssh -i ~/.ssh/id_rsa_circleci_remote_docker_engine valverde@$MASTER_SERVER_URL 'rm -r ./deploy/k8s'
