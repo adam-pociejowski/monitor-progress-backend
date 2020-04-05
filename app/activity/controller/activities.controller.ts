@@ -19,6 +19,7 @@ router.get('/older/:limit/:previous', function (req: Request, res: Response) {
             res.send(activityService.calculateFitnessPoints(activities));
         })
         .catch((error: any) => {
+            console.error(error);
             res.status(500);
             res.send(error);
         });
@@ -31,6 +32,7 @@ router.get('/newer/:limit/:previous', function (req: Request, res: Response) {
             res.send(activities);
         })
         .catch((error: any) => {
+            console.error(error);
             res.status(500);
             res.send(error);
         });
@@ -43,6 +45,7 @@ router.post('/', function (req: Request, res: Response) {
             res.send(inserted);
         })
         .catch((error: any) => {
+            console.error(error);
             res.status(500);
             res.send(error);
         });
@@ -55,6 +58,7 @@ router.put('/', function (req: Request, res: Response) {
             res.send(updated);
         })
         .catch((error: any) => {
+            console.error(error);
             res.status(500);
             res.send(error);
         });
@@ -67,6 +71,7 @@ router.delete('/:id/:rev', function (req: Request, res: Response) {
             res.send(deleted.data);
         })
         .catch((error: any) => {
+            console.error(error);
             res.status(500);
             res.send(error);
         });

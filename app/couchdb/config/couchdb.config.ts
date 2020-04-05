@@ -2,12 +2,12 @@ const NodeCouchDb = require('node-couchdb');
 
 module.exports = {
     connection: new NodeCouchDb({
-        host: 'couchdb.valverde.duckdns.org',
-        protocol: 'https',
-        port: 443,
+        host: process.env.COUCHDB_HOST,
+        protocol: process.env.COUCHDB_HOST_PROTOCOL,
+        port: process.env.COUCHDB_HOST_PORT,
         auth: {
-            user: "user",
-            password: "password"
+            user: process.env.COUCHDB_USERNAME,
+            password: process.env.COUCHDB_PASSWORD
         }
     }),
     activityDbName: "activities"
