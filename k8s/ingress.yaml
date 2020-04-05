@@ -17,3 +17,9 @@ spec:
           - backend:
               serviceName: nodejs-backend
               servicePort: 3000
+    - host: monitoring-progress.valverde.duckdns.org
+      http:
+        paths:
+          - backend:
+              serviceName: app-frontend
+              servicePort: 80
