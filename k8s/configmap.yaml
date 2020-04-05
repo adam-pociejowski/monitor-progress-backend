@@ -6,8 +6,8 @@ metadata:
   labels:
     app: nodejs-backend
 data:
-  COUCHDB_HOST: couchdb
-  COUCHDB_HOST_PROTOCOL: http
-  COUCHDB_HOST_PORT: 5984
-  COUCHDB_USERNAME: user
-  COUCHDB_PASSWORD: password
+  COUCHDB_HOST: "couchdb"
+  COUCHDB_HOST_PROTOCOL: "http"
+  COUCHDB_HOST_PORT: "5984"
+  COUCHDB_USERNAME: "user"
+  COUCHDB_PASSWORD: "password"
