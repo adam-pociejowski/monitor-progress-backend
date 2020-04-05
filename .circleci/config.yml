@@ -36,7 +36,13 @@ jobs:
           name: Add server IP to known hosts
           command: ssh-keyscan $MASTER_SERVER_URL >> ~/.ssh/known_hosts
       - run:
-          name: Send deployment configuration to server
+          name: Send configuration files to server
+          command: ls ~/.ssh
+      - run:
+          name: Send configuration files to server
+          command: echo $PRIVATE_KEY_FILENAME
+      - run:
+          name: Send configuration files to server
           command: scp -i ~/.ssh/$PRIVATE_KEY_FILENAME -r ./k8s valverde@$MASTER_SERVER_URL:deploy/.
       - run:
           name: Apply kubernetes configuration
