@@ -8,10 +8,10 @@ jobs:
       - checkout
       - setup_remote_docker
       - run:
-         name: update-npm
-         command: 'sudo npm install -g npm@latest'
+         name: Update NPM
+         command: sudo npm install -g npm@latest
       - run:
-         name: NPM install
+         name: Install NPM dependencies
          command: npm install
       - save_cache:
          key: dependency-cache-{{ checksum "package-lock.json" }}
@@ -33,8 +33,14 @@ jobs:
           fingerprints:
             - $PRIVATE_KEY_FINGERPRINT
       - run:
-          name: Add master node to known hosts
-          command: 'ssh-keyscan $MASTER_SERVER_URL >> ~/.ssh/known_hosts'
+          name: Add server IP to known hosts
+          command: ssh-keyscan $MASTER_SERVER_URL >> ~/.ssh/known_hosts
       - run:
-          name: Send deployment configuration
-          command: 'scp -i ~/.ssh/$PRIVATE_KEY_FILENAME -r ./build valverde@$MASTER_SERVER_URL:'
+          name: Send deployment configuration to server
+          command: scp -i ~/.ssh/$PRIVATE_KEY_FILENAME -r ./k8s valverde@$MASTER_SERVER_URL:deploy/.
+      - run:
+          name: Apply kubernetes configuration
+          command: ssh -i ~/.ssh/$PRIVATE_KEY_FILENAME valverde@$MASTER_SERVER_URL 'kubectl apply -f ./deploy/k8s'
+      - run:
+          name: Remove kubernetes configuration file
+          command: ssh -i ~/.ssh/$PRIVATE_KEY_FILENAME valverde@$MASTER_SERVER_URL 'rm -r ./deploy/k8s'
