@@ -25,10 +25,10 @@ jobs:
           command: echo "$DOCKERHUB_PASSWORD" | docker login --username $DOCKERHUB_USERNAME --password-stdin
       - run:
           name: Build docker image
-          command: docker build -t apociejowski/monitoring-progress-backend:$CIRCLE_BUILD_NUM .
+          command: docker build -t apociejowski/monitoring-progress-backend:$CIRCLE_BUILD_NUM -t apociejowski/monitoring-progress-backend:latest .
       - run:
            name: Push docker image
-           command: docker push apociejowski/monitoring-progress-backend:$CIRCLE_BUILD_NUM
+           command: docker push apociejowski/monitoring-progress-backend:$CIRCLE_BUILD_NUM apociejowski/monitoring-progress-backend:latest
       - add_ssh_keys:
           fingerprints:
             - $PRIVATE_KEY_FINGERPRINT
