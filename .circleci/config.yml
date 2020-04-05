@@ -11,36 +11,30 @@ jobs:
          name: update-npm
          command: 'sudo npm install -g npm@latest'
       - run:
-         name: npm-install
+         name: NPM install
          command: npm install
       - save_cache:
          key: dependency-cache-{{ checksum "package-lock.json" }}
          paths:
            - ./node_module
       - run:
-          name: build-tsc
+          name: Build Typescript
           command: npm run tsc
       - run:
-          name: login-dockerhub
+          name: Log In into Dockerhub
           command: echo "$DOCKERHUB_PASSWORD" | docker login --username $DOCKERHUB_USERNAME --password-stdin
       - run:
-          name: docker-build
+          name: Build docker image
           command: docker build -t apociejowski/monitoring-progress-backend:$CIRCLE_BUILD_NUM .
       - run:
-           name: docker-push
+           name: Push docker image
            command: docker push apociejowski/monitoring-progress-backend:$CIRCLE_BUILD_NUM
       - add_ssh_keys:
           fingerprints:
-            - "52:72:cc:59:c2:43:da:3f:18:b8:c5:92:de:89:ab:28"
+            - $PRIVATE_KEY_FINGERPRINT
       - run:
-          name: send-artifacts2
-          command: 'cat ~/.ssh/known_hosts'
+          name: Add master node to known hosts
+          command: 'ssh-keyscan $MASTER_SERVER_URL >> ~/.ssh/known_hosts'
       - run:
-          name: send-artifacts1
-          command: 'ssh-keyscan 188.68.242.244 >> ~/.ssh/known_hosts'
-      - run:
-          name: send-artifacts2
-          command: 'cat ~/.ssh/known_hosts'
-      - run:
-          name: send-artifacts
-          command: 'scp -i ~/.ssh/id_rsa_5272cc59c243da3f18b8c592de89ab28 -r ./build valverde@188.68.242.244:'
+          name: Send deployment configuration
+          command: 'scp -i ~/.ssh/$PRIVATE_KEY_FILENAME -r ./build valverde@$MASTER_SERVER_URL:'
