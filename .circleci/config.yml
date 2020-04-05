@@ -6,6 +6,8 @@ jobs:
       - image: circleci/node:10.16.3
     steps:
       - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true
       - run:
          name: update-npm
          command: 'sudo npm install -g npm@latest'
@@ -24,10 +26,10 @@ jobs:
           command: echo "$DOCKERHUB_PASSWORD" | docker login --username $DOCKERHUB_USERNAME --password-stdin
       - run:
           name: docker-build
-          command: docker build -t apociejowski/monitoring-progress-backend .
+          command: docker build -t apociejowski/monitoring-progress-backend:$CIRCLE_BUILD_NUM .
       - run:
            name: docker-push
-           command: docker push apociejowski/monitoring-progress-backend
+           command: docker push apociejowski/monitoring-progress-backend:$CIRCLE_BUILD_NUM
       - add_ssh_keys:
           fingerprints:
             - "52:72:cc:59:c2:43:da:3f:18:b8:c5:92:de:89:ab:28"
