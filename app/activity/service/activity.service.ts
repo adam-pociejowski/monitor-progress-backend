@@ -5,15 +5,31 @@ import { ActivityConfig } from "../model/activity.config.model";
 // @ts-ignore
 import YAML from 'yaml'
 import { CouchDbDocumentModel } from "../../couchdb/model/couchdb.document.model";
+import {DocumentStats} from "../../couchdb/model/document.stats.model";
 
 export class ActivityService extends CouchDbService<Activity> {
     private sortField: string = 'value.datetime';
     private readonly configMap: any;
+    private startKey = ['A'];
+    private endKey = ['Z'];
+    private co = { startKey: this.startKey, endKey: this.endKey, group: true};
 
     constructor() {
         super();
         this.configMap = this.loadActivitiesConfigsFromFile();
     }
+
+    getStats = () => {
+        return this.couchDb.get(this.dbName, '_design/activity_stats/_view/stats', this.co)
+            .then(( result: any) => {
+                let stats: any = {};
+                result.data.rows
+                    .forEach((row: any) => {
+                        stats[row.key] = new DocumentStats(row.value.sum, row.value.count, row.value.min, row.value.max, row.value.sumsqr);
+                    });
+                return stats;
+            })
+    };
 
     getConfigList = () => {
         let configs = [];

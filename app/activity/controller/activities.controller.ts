@@ -12,6 +12,17 @@ router.get('/config', function (req: Request, res: Response) {
     res.send(activityService.getConfigList());
 });
 
+router.get('/stats', function (req: Request, res: Response) {
+    activityService
+        .getStats()
+        .then((data: any) => res.send(data))
+        .catch((error: any) => {
+            console.error(error);
+            res.status(500);
+            res.send(error);
+        });
+});
+
 router.get('/older/:limit/:previous', function (req: Request, res: Response) {
     activityService
         .findOlderDocuments(req.params.previous, req.params.limit)
