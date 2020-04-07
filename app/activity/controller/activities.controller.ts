@@ -12,6 +12,17 @@ router.get('/config', function (req: Request, res: Response) {
     res.send(activityService.getConfigList());
 });
 
+router.get('/stats-per-day', function (req: Request, res: Response) {
+    activityService
+        .getFitnessPointsPerDate()
+        .then((data: any) => res.send(data))
+        .catch((error: any) => {
+            console.error(error);
+            res.status(500);
+            res.send(error);
+        });
+});
+
 router.get('/stats', function (req: Request, res: Response) {
     activityService
         .getStats()

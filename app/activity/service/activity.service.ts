@@ -10,25 +10,24 @@ import {DocumentStats} from "../../couchdb/model/document.stats.model";
 export class ActivityService extends CouchDbService<Activity> {
     private sortField: string = 'value.datetime';
     private readonly configMap: any;
-    private startKey = ['A'];
-    private endKey = ['Z'];
-    private co = { startKey: this.startKey, endKey: this.endKey, group: true};
 
     constructor() {
         super();
         this.configMap = this.loadActivitiesConfigsFromFile();
     }
 
+    getFitnessPointsPerDate = () => {
+        return this.couchDb.get(this.dbName, '_design/activity_stats/_view/fitness-points-per-date', { group: true})
+            .then(( result: any) => result.data.rows
+                    .reduce((map: any, obj: any) =>
+                        (map[obj.key] = obj.value, map), {}))
+    };
+
     getStats = () => {
-        return this.couchDb.get(this.dbName, '_design/activity_stats/_view/stats', this.co)
-            .then(( result: any) => {
-                let stats: any = {};
-                result.data.rows
-                    .forEach((row: any) => {
-                        stats[row.key] = new DocumentStats(row.value.sum, row.value.count, row.value.min, row.value.max, row.value.sumsqr);
-                    });
-                return stats;
-            })
+        return this.couchDb.get(this.dbName, '_design/activity_stats/_view/stats', { group: true})
+            .then(( result: any) => result.data.rows
+                    .reduce((map: any, obj: any) =>
+                        (map[obj.key] = new DocumentStats(obj.value.sum, obj.value.count, obj.value.min, obj.value.max, obj.value.sumsqr), map), {}))
     };
 
     getConfigList = () => {
@@ -54,12 +53,9 @@ export class ActivityService extends CouchDbService<Activity> {
         return activity;
     };
 
-    private loadActivitiesConfigsFromFile = () => {
-        let map: any = {};
+    private loadActivitiesConfigsFromFile = () =>
         this.getActivitiesConfigList()
-            .forEach((config: ActivityConfig) => { map[config.name] = config });
-        return map;
-    };
+            .reduce((map: any, obj: any) => (map[obj.name] = obj, map), {});
 
     private getActivitiesConfigList = () =>
         YAML
