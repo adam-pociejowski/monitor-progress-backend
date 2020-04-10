@@ -55,8 +55,8 @@ export abstract class CouchDbService<T> {
             previousValue = null;
         let selector: any = {};
         selector[sortField] = (sortMethod === 'desc') ?
-            {$gt: previousValue} :
-            {$lt: previousValue};
+            {$lt: previousValue} :
+            {$gt: previousValue};
         return selector;
     }
 
