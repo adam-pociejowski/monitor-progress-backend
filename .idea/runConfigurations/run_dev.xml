@@ -1,0 +1,18 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="run dev" type="js.build_tools.npm">
+    <package-json value="$PROJECT_DIR$/package.json" />
+    <command value="run" />
+    <scripts>
+      <script value="tsc" />
+    </scripts>
+    <node-interpreter value="project" />
+    <envs>
+      <env name="COUCHDB_HOST" value="localhost" />
+      <env name="COUCHDB_HOST_PORT" value="5984" />
+      <env name="COUCHDB_HOST_PROTOCOL" value="http" />
+      <env name="COUCHDB_USERNAME" value="user" />
+      <env name="COUCHDB_PASSWORD" value="password" />
+    </envs>
+    <method v="2" />
+  </configuration>
+</component>
