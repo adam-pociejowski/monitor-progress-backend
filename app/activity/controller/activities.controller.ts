@@ -53,7 +53,7 @@ router.post('/', function (req: Request, res: Response) {
 
 router.put('/', function (req: Request, res: Response) {
     activityService
-        .update(new CouchDbDocumentModel<Activity>(req.body.id, req.body.rev, req.body.value))
+        .update(new CouchDbDocumentModel<Activity>(req.body.id, req.body.rev, req.body.value, req.body.type))
         .then((updated: CouchDbDocumentModel<Activity>) => {
             res.send(updated);
         })
