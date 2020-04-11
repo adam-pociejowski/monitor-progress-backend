@@ -2,9 +2,18 @@
 - name: PULL_UP
   measureType: REPEATS
   fitnessPointsFactor: 5
+- name: PULL_UP_BICEPS
+  measureType: REPEATS
+  fitnessPointsFactor: 4
 - name: PUSH_UP
   measureType: REPEATS
+  fitnessPointsFactor: 1.2
+- name: PUSH_UP_BICEPS
+  measureType: REPEATS
   fitnessPointsFactor: 1.5
+- name: PUSH_UP_ELEVATED
+  measureType: REPEATS
+  fitnessPointsFactor: 1.6
 - name: STRETCHING
   measureType: SECONDS
   fitnessPointsFactor: 0.1

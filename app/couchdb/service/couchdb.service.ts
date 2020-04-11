@@ -19,7 +19,7 @@ export abstract class CouchDbService<T> {
                     _rev: model.rev,
                     value: model.value
                 })
-            .then((result: any) => new CouchDbDocumentModel<T>(result.data.id, result.data.rev, model.value));
+            .then((result: any) => new CouchDbDocumentModel<T>(result.data.id, result.data.rev, model.value, model.type));
 
     insert = (value: T, type: DocumentType) =>
          this.generateUniqueId()
@@ -30,7 +30,7 @@ export abstract class CouchDbService<T> {
                         value: value,
                         type: type
                     })
-                    .then((result: any) => new CouchDbDocumentModel<T>(result.data.id, result.data.rev, value)));
+                    .then((result: any) => new CouchDbDocumentModel<T>(result.data.id, result.data.rev, value, type)));
 
     findNextDocuments = (previousValue: any, sortField: string, sortMethod: string, limit: number) =>
         this.couchDb
@@ -43,7 +43,7 @@ export abstract class CouchDbService<T> {
                 ).then((obj : any) =>
                     obj.data
                         .docs
-                        .map((doc: any) => new CouchDbDocumentModel<T>(doc._id, doc._rev, doc.value)));
+                        .map((doc: any) => new CouchDbDocumentModel<T>(doc._id, doc._rev, doc.value, doc.type)));
 
     generateUniqueId = () =>
         this
