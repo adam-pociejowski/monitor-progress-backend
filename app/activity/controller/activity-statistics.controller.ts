@@ -5,9 +5,21 @@ const express = require('express');
 const router = express.Router();
 const activityStatisticsService = new ActivityStatisticsService();
 
-router.get('/stats-per-day/:startKey/:endKey', function (req: Request, res: Response) {
+router.get('/fitness-points-per-day/:startKey/:endKey', function (req: Request, res: Response) {
     activityStatisticsService
         .getFitnessPointsPerDate(req.params.startKey, req.params.endKey)
+        .then((data: any) => res.send(data))
+        .catch((error: any) => {
+            console.error(error);
+            res.status(500);
+            res.send(error);
+        });
+
+});
+
+router.get('/fitness-points-per-date', function (req: Request, res: Response) {
+    activityStatisticsService
+        .getStatsPerDate()
         .then((data: any) => res.send(data))
         .catch((error: any) => {
             console.error(error);

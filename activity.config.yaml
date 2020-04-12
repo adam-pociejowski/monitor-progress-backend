@@ -14,6 +14,9 @@
 - name: PUSH_UP_ELEVATED
   measureType: REPEATS
   fitnessPointsFactor: 1.6
+- name: ABS
+  measureType: SECONDS
+  fitnessPointsFactor: 0.3
 - name: STRETCHING
   measureType: SECONDS
   fitnessPointsFactor: 0.1
