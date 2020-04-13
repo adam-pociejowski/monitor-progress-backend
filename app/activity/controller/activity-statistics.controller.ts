@@ -17,7 +17,7 @@ router.get('/fitness-points-per-day/:startKey/:endKey', function (req: Request, 
 
 });
 
-router.get('/fitness-points-per-date', function (req: Request, res: Response) {
+router.get('/stats-per-date', function (req: Request, res: Response) {
     activityStatisticsService
         .getStatsPerDate()
         .then((data: any) => res.send(data))

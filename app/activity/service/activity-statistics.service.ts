@@ -24,13 +24,13 @@ export class ActivityStatisticsService extends CouchDbService<DocumentStats> {
             .then((result: any) => {
                 let stats: any = {};
                 for (let obj of result.data.rows) {
-                    let split = obj.key.split('_');
+                    let split = obj.key.split('#');
                     let date = split[0];
                     let activityType = split[1];
-                    if (typeof(stats[date]) === "undefined") {
-                        stats[date] = {};
+                    if (typeof(stats[activityType]) === "undefined") {
+                        stats[activityType] = {};
                     }
-                    stats[date][activityType] = obj.value;
+                    stats[activityType][date] = obj.value;
                 }
                 return stats;
             });
