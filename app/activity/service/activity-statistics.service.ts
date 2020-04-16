@@ -34,4 +34,21 @@ export class ActivityStatisticsService extends CouchDbService<DocumentStats> {
                 }
                 return stats;
             });
+
+    getStatsPerWeek = () =>
+        this.couchDb.get(this.dbName, '_design/activity_stats/_view/stats-per-week', { group: true })
+            .then((result: any) => {
+                let stats: any = {};
+                for (let obj of result.data.rows) {
+                    let split = obj.key.split('#');
+                    let startWeek = split[0];
+                    let endWeek = split[1];
+                    let activityType = split[2];
+                    if (typeof(stats[activityType]) === "undefined") {
+                        stats[activityType] = {};
+                    }
+                    stats[activityType][`${startWeek}-${endWeek}`] = obj.value;
+                }
+                return stats;
+            });
 }

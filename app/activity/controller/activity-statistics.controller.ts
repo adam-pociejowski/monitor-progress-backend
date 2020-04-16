@@ -17,6 +17,17 @@ router.get('/fitness-points-per-day/:startKey/:endKey', function (req: Request, 
 
 });
 
+router.get('/stats-per-week', function (req: Request, res: Response) {
+    activityStatisticsService
+        .getStatsPerWeek()
+        .then((data: any) => res.send(data))
+        .catch((error: any) => {
+            console.error(error);
+            res.status(500);
+            res.send(error);
+        });
+});
+
 router.get('/stats-per-date', function (req: Request, res: Response) {
     activityStatisticsService
         .getStatsPerDate()
