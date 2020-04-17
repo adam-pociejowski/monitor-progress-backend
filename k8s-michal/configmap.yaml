@@ -6,7 +6,7 @@ metadata:
   labels:
     app: nodejs-backend-michal
 data:
-  COUCHDB_HOST: "couchdb-michal"
+  COUCHDB_HOST: "couchdbmichal"
   COUCHDB_HOST_PROTOCOL: "http"
   COUCHDB_HOST_PORT: "5984"
   COUCHDB_USERNAME: "user"
