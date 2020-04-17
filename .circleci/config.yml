@@ -46,7 +46,7 @@ jobs:
           command: 'scp -i ~/.ssh/id_rsa_circleci_remote_docker_engine -r k8s valverde@$MASTER_SERVER_URL:'
       - run:
           name: Apply kubernetes configuration
-          command: ssh -i ~/.ssh/id_rsa_circleci_remote_docker_engine valverde@$MASTER_SERVER_URL 'kubectl apply -f ~/k8s'
+          command: ssh -i ~/.ssh/id_rsa_circleci_remote_docker_engine valverde@$MASTER_SERVER_URL 'kubectl config set-context $(kubectl config current-context) --namespace test;kubectl apply -f ~/k8s'
       - run:
           name: Remove kubernetes configuration file
           command: ssh -i ~/.ssh/id_rsa_circleci_remote_docker_engine valverde@$MASTER_SERVER_URL 'rm -r ~/k8s'

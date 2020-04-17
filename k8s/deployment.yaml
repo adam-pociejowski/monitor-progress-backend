@@ -2,7 +2,6 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: nodejs-backend
-  namespace: "monitoring-progress"
 spec:
   replicas: 1
   template:
