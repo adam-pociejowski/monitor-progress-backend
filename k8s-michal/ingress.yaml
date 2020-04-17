@@ -9,7 +9,7 @@ spec:
       http:
         paths:
           - backend:
-              serviceName: couchdb-michal
+              serviceName: couchdbmichal
               servicePort: 5984
     - host: monitoring-progress-michal-backend.valverde.duckdns.org
       http:
