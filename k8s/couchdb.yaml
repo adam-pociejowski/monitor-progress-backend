@@ -1,0 +1,85 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: couchdb-config
+  namespace: "monitoring-progress"
+  labels:
+    app: couchdb
+data:
+  COUCHDB_USER: user
+  COUCHDB_PASSWORD: password
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: couchdb-pv-volume
+  namespace: "monitoring-progress"
+  labels:
+    type: local
+    app: couchdb
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/mnt/data"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: couchdb-pv-claim
+  namespace: "monitoring-progress"
+  labels:
+    app: couchdb
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: couchdb
+  namespace: "monitoring-progress"
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: couchdb
+    spec:
+      containers:
+        - name: couchdb
+          image: couchdb:3.0.0
+          imagePullPolicy: "IfNotPresent"
+          ports:
+            - containerPort: 5984
+          envFrom:
+            - configMapRef:
+                name: couchdb-config
+          volumeMounts:
+            - mountPath: /opt/couchdb/data
+              name: couchdb
+      volumes:
+        - name: couchdb
+          persistentVolumeClaim:
+            claimName: couchdb-pv-claim
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: couchdb
+  namespace: "monitoring-progress"
+  labels:
+    app: couchdb
+spec:
+  type: ClusterIP
+  ports:
+    - port: 5984
+  selector:
+    app: couchdb
