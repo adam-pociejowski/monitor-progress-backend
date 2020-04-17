@@ -1,0 +1,25 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: "nginx"
+  namespace: "monitoring-progress-michal"
+spec:
+  rules:
+    - host: monitoring-progress-michal-couchdb.valverde.duckdns.org
+      http:
+        paths:
+          - backend:
+              serviceName: couchdb
+              servicePort: 5984
+    - host: monitoring-progress-michal-backend.valverde.duckdns.org
+      http:
+        paths:
+          - backend:
+              serviceName: nodejs-backend
+              servicePort: 3000
+    - host: monitoring-progress-michal.valverde.duckdns.org
+      http:
+        paths:
+          - backend:
+              serviceName: app-frontend
+              servicePort: 80

@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nodejs-backend-config
+  namespace: "monitoring-progress-michal"
+  labels:
+    app: nodejs-backend
+data:
+  COUCHDB_HOST: "couchdb"
+  COUCHDB_HOST_PROTOCOL: "http"
+  COUCHDB_HOST_PORT: "5984"
+  COUCHDB_USERNAME: "user"
+  COUCHDB_PASSWORD: "password"
