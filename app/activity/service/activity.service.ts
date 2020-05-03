@@ -6,6 +6,7 @@ import { ActivityConfig } from "../model/activity.config.model";
 import YAML from 'yaml'
 import { CouchDbDocumentModel } from "../../couchdb/model/couchdb.document.model";
 import {DocumentStats} from "../../couchdb/model/document.stats.model";
+import { SocialUser } from "../../user/model/social.user.model";
 
 export class ActivityService extends CouchDbService<Activity> {
     private sortField: string = 'value.datetime';
@@ -24,11 +25,11 @@ export class ActivityService extends CouchDbService<Activity> {
         return configs;
     };
 
-    findOlderDocuments = (previous: string, limit: number) =>
-        this.findNextDocuments(previous, this.sortField, 'desc', limit);
+    findOlderDocuments = (previous: string, limit: number, user: SocialUser) =>
+        this.findNextDocuments(previous, this.sortField, 'desc', limit, user);
 
-    findNewerDocuments = (previous: string, limit: number) =>
-        this.findNextDocuments(previous, this.sortField, 'asc', limit);
+    findNewerDocuments = (previous: string, limit: number, user: SocialUser) =>
+        this.findNextDocuments(previous, this.sortField, 'asc', limit, user);
 
     calculateFitnessPoints = (activities: CouchDbDocumentModel<Activity>[]) =>
         activities
