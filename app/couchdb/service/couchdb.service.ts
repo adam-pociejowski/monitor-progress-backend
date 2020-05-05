@@ -22,7 +22,8 @@ export abstract class CouchDbService<T> {
                 {
                     _id: model.id,
                     _rev: model.rev,
-                    value: model.value
+                    value: model.value,
+                    user: model.user
                 })
             .then((result: any) => new CouchDbDocumentModel<T>(result.data.id, result.data.rev, model.value, CouchDbService.toUser(socialUser), model.type));
 

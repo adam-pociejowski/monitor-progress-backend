@@ -1,11 +1,11 @@
-import { Request, Response } from "express";
-import { Activity } from '../model/activity.model';
-import { ActivityService } from '../service/activity.service';
-import { DocumentType } from "../../couchdb/model/document.type.enum";
-import { CouchDbDocumentModel } from "../../couchdb/model/couchdb.document.model";
-import { SocialUserService } from "../../user/service/social.user.service";
-import { SocialUser } from "../../user/model/social.user.model";
-import { User } from "../../user/model/user.model";
+import {Request, Response} from "express";
+import {Activity} from '../model/activity.model';
+import {ActivityService} from '../service/activity.service';
+import {DocumentType} from "../../couchdb/model/document.type.enum";
+import {CouchDbDocumentModel} from "../../couchdb/model/couchdb.document.model";
+import {SocialUserService} from "../../user/service/social.user.service";
+import {SocialUser} from "../../user/model/social.user.model";
+import {User} from "../../user/model/user.model";
 
 const express = require('express');
 const router = express.Router();
@@ -59,11 +59,13 @@ router.post('/', function (req: Request, res: Response) {
 router.put('/', function (req: Request, res: Response) {
     let socialUser = getSocialUser(req);
     activityService
-        .update(new CouchDbDocumentModel<Activity>(
-            req.body.id,
-            req.body.rev,
-            req.body.value,
-            new User(socialUser.email, socialUser.provider), req.body.type),
+        .update(
+            new CouchDbDocumentModel<Activity>(
+                req.body.id,
+                req.body.rev,
+                req.body.value,
+                new User(socialUser.email, socialUser.provider),
+                req.body.type),
             socialUser)
         .then((updated: CouchDbDocumentModel<Activity>) => {
             res.send(updated);
