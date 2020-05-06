@@ -5,19 +5,19 @@ metadata:
   namespace: "monitoring-progress"
 spec:
   rules:
-    - host: couchdb.valverde.duckdns.org
+    - host: couchdb.apociejowski.pl
       http:
         paths:
           - backend:
               serviceName: couchdb
               servicePort: 5984
-    - host: monitoring-progress-backend.valverde.duckdns.org
+    - host: monitoring-progress-backend.apociejowski.pl
       http:
         paths:
           - backend:
               serviceName: nodejs-backend
               servicePort: 3000
-    - host: monitoring-progress.valverde.duckdns.org
+    - host: monitoring-progress.apociejowski.pl
       http:
         paths:
           - backend:
