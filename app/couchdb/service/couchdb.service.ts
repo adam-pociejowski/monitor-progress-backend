@@ -8,7 +8,11 @@ const db = require('../../couchdb/config/couchdb.config');
 
 export abstract class CouchDbService<T> {
     protected couchDb = db.connection;
-    protected dbName = db.activityDbName;
+    protected readonly dbName: string;
+
+    protected constructor(dbName: string) {
+        this.dbName = dbName;
+    }
 
     delete = (id: string,
               rev: string) =>

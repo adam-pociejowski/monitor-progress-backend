@@ -10,5 +10,6 @@ module.exports = {
             password: process.env.COUCHDB_PASSWORD
         }
     }),
-    activityDbName: "activities"
+    activityDbName: "activities",
+    goalsDbName: "goals"
 };

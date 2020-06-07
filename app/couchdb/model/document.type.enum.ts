@@ -1,3 +1,4 @@
 export enum DocumentType {
-    ACTIVITY = "ACTIVITY"
+    ACTIVITY = "ACTIVITY",
+    GOAL = "GOAL",
 }

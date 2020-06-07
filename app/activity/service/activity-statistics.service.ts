@@ -2,8 +2,13 @@ import { CouchDbService } from "../../couchdb/service/couchdb.service";
 import { DocumentStats } from "../../couchdb/model/document.stats.model";
 import { ReduceRequest } from "../../couchdb/model/reduce.request.model";
 import { CouchDbView } from "../../couchdb/model/view.enum";
+const db = require('../../couchdb/config/couchdb.config');
 
 export class ActivityStatisticsService extends CouchDbService<DocumentStats> {
+
+    constructor() {
+        super(db.activityDbName);
+    }
 
     getFitnessPointsMultiGroup = (reduceRequest: ReduceRequest) =>
         this.getMultiGroupResult(reduceRequest, CouchDbView.FITNESS_POINTS_MULTI_GROUP);

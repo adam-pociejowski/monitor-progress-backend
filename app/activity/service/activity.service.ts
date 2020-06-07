@@ -7,13 +7,14 @@ import YAML from 'yaml'
 import { CouchDbDocumentModel } from "../../couchdb/model/couchdb.document.model";
 import {DocumentStats} from "../../couchdb/model/document.stats.model";
 import { SocialUser } from "../../user/model/social.user.model";
+const db = require('../../couchdb/config/couchdb.config');
 
 export class ActivityService extends CouchDbService<Activity> {
     private sortField: string = 'value.datetime';
     private readonly configMap: any;
 
     constructor() {
-        super();
+        super(db.activityDbName);
         this.configMap = this.loadActivitiesConfigsFromFile();
     }
 
