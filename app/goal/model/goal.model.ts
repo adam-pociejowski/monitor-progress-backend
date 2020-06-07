@@ -8,6 +8,7 @@ export class Goal {
     period: Period;
     goalMeasure: GoalMeasure;
     goalAmount: number;
+    creationDate: Date;
     archived: boolean = false;
     elapsedGoals: GoalItem[] = [];
     currentGoal: GoalItem;
@@ -17,6 +18,7 @@ export class Goal {
         this.period = json.period;
         this.goalMeasure = json.goalMeasure;
         this.goalAmount = json.goalAmount;
+        this.creationDate = json.creationDate;
         this.currentGoal = GoalService.generateCurrentGoalItem(this);
     }
 }

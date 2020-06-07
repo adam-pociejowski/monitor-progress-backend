@@ -2,8 +2,6 @@ import { CouchDbDocumentModel } from "../model/couchdb.document.model";
 import { DocumentType } from "../model/document.type.enum";
 import { SocialUser } from "../../user/model/social.user.model";
 import { User } from "../../user/model/user.model";
-import { Provider } from "../../user/model/provider.enum";
-
 const db = require('../../couchdb/config/couchdb.config');
 
 export abstract class CouchDbService<T> {
@@ -57,15 +55,33 @@ export abstract class CouchDbService<T> {
                         sort: [CouchDbService.prepareSortObject(sortField, sortMethod)],
                         limit: +limit
                     }, {}
-                ).then((obj : any) =>
-                    obj.data
-                        .docs
-                        .map((doc: any) => new CouchDbDocumentModel<T>(doc._id, doc._rev, doc.value, CouchDbService.toUser(socialUser), doc.type)));
+                ).then((obj : any) => this.mapToDocuments(obj, socialUser));
+
+    findAll = (socialUser: SocialUser) => {
+        let user = CouchDbService.toUser(socialUser);
+        return this.couchDb
+            .mango(
+                this.dbName, {
+                    selector: {
+                        'user.username': user.username,
+                        'user.provider': user.provider,
+                    },
+                    sort: [
+                        CouchDbService.prepareSortObject('_id', 'desc')
+                    ]
+                }, {}
+            ).then((obj : any) => this.mapToDocuments(obj, socialUser));
+    }
 
     generateUniqueId = () =>
         this
             .couchDb
             .uniqid();
+
+    private mapToDocuments = (obj: any, socialUser: SocialUser) =>
+        obj.data
+            .docs
+            .map((doc: any) => new CouchDbDocumentModel<T>(doc._id, doc._rev, doc.value, CouchDbService.toUser(socialUser), doc.type));
 
     private static toUser = (socialUser: SocialUser) =>
         new User(socialUser.email, socialUser.provider);

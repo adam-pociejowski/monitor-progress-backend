@@ -24,6 +24,19 @@ router.post('/', function (req: Request, res: Response) {
         });
 });
 
+router.get('/', function (req: Request, res: Response) {
+    goalService
+        .findAll(getSocialUser(req))
+        .then((docs: CouchDbDocumentModel<Goal>[]) => {
+            res.send(docs);
+        })
+        .catch((error: any) => {
+            console.error(error);
+            res.status(500);
+            res.send(error);
+        });
+});
+
 function getSocialUser(req: Request): SocialUser {
     if (req.headers.auth !== undefined) {
         return socialUserService.mapToSocialUser(JSON.parse(req.headers.auth.toString()));

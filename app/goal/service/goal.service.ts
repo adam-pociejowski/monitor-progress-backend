@@ -2,7 +2,8 @@ import { CouchDbService } from "../../couchdb/service/couchdb.service";
 import { Goal } from "../model/goal.model";
 import { GoalItem } from "../model/goal-item.model";
 import { Period } from "../model/period.enum";
-import {DateService} from "./date.service";
+import { DateService } from "./date.service";
+
 const db = require('../../couchdb/config/couchdb.config');
 
 export class GoalService extends CouchDbService<Goal> {
@@ -26,8 +27,8 @@ export class GoalService extends CouchDbService<Goal> {
                 return GoalService.generateCurrentGoalItemForYearlyPeriod(now);
             default:
                 throw new Error(`No goal item generation strategy found for period ${goal.period}`);
-            }
-         }
+        }
+    }
 
     private static generateCurrentGoalItemForNonePeriod = () =>
         new GoalItem(null, null)
