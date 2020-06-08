@@ -17,17 +17,7 @@ export class GoalService extends CouchDbService<Goal> {
         super(db.goalsDbName);
     }
 
-    findCurrentGoals = (socialUser: SocialUser) =>
-        this.findAll(socialUser)
-            .then((docs: CouchDbDocumentModel<Goal>[]) => {
-                return docs
-                    .map((doc: CouchDbDocumentModel<Goal>) => {
-                        doc.value.currentGoal.amount = 50;
-                        return doc;
-                    });
-            })
-
-    mapToObject = (obj: any,
+    public mapToObject = (obj: any,
                    insert: boolean = false) =>
         new Goal(
             obj.activityType,
@@ -42,4 +32,14 @@ export class GoalService extends CouchDbService<Goal> {
                 this.goalItemInitGenerateService.generate(obj.period) :
                 this.goalItemCurrentGenerateService.generate(obj.period, obj.activityType, obj.currentGoal)
         )
+
+    findCurrentGoals = (socialUser: SocialUser) =>
+        this.findAll(socialUser)
+            .then((docs: CouchDbDocumentModel<Goal>[]) => {
+                return docs
+                    .map((doc: CouchDbDocumentModel<Goal>) => {
+                        doc.value.currentGoal.amount = 50;
+                        return doc;
+                    });
+            })
 }

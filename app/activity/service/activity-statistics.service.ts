@@ -10,6 +10,16 @@ export class ActivityStatisticsService extends CouchDbService<DocumentStats> {
         super(db.activityDbName);
     }
 
+    public mapToObject(obj: any): DocumentStats {
+        return new DocumentStats(
+            obj.sum,
+            obj.count,
+            obj.min,
+            obj.max,
+            obj.sumsqr
+        );
+    }
+
     getFitnessPointsMultiGroup = (reduceRequest: ReduceRequest) =>
         this.getMultiGroupResult(reduceRequest, CouchDbView.FITNESS_POINTS_MULTI_GROUP);
 
