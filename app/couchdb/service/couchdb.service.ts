@@ -12,6 +12,8 @@ export abstract class CouchDbService<T> {
         this.dbName = dbName;
     }
 
+    public abstract mapToObject(obj: any, insert: boolean): T;
+
     delete = (id: string,
               rev: string) =>
         this.couchDb
@@ -81,7 +83,11 @@ export abstract class CouchDbService<T> {
     private mapToDocuments = (obj: any, socialUser: SocialUser) =>
         obj.data
             .docs
-            .map((doc: any) => new CouchDbDocumentModel<T>(doc._id, doc._rev, doc.value, CouchDbService.toUser(socialUser), doc.type));
+            .map((doc: any) => new CouchDbDocumentModel<T>(
+                doc._id,
+                doc._rev,
+                this.mapToObject(doc.value, false),
+                CouchDbService.toUser(socialUser), doc.type));
 
     private static toUser = (socialUser: SocialUser) =>
         new User(socialUser.email, socialUser.provider);

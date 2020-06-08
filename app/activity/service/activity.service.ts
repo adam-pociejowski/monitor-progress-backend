@@ -7,6 +7,7 @@ import YAML from 'yaml'
 import { CouchDbDocumentModel } from "../../couchdb/model/couchdb.document.model";
 import {DocumentStats} from "../../couchdb/model/document.stats.model";
 import { SocialUser } from "../../user/model/social.user.model";
+import {Measure} from "../model/measure.model";
 const db = require('../../couchdb/config/couchdb.config');
 
 export class ActivityService extends CouchDbService<Activity> {
@@ -35,6 +36,18 @@ export class ActivityService extends CouchDbService<Activity> {
     calculateFitnessPoints = (activities: CouchDbDocumentModel<Activity>[]) =>
         activities
             .map((activity) => this.calculate(activity));
+
+    mapToObject = (obj: any,
+                   insert: boolean = false): Activity =>
+        new Activity(
+            obj.name,
+            obj.datetime,
+            obj.type,
+            new Measure(
+                obj.measure.type,
+                obj.measure.value),
+            insert ? 0 : obj.fitnessPoints,
+            obj.metadata);
 
     private calculate = (activity: CouchDbDocumentModel<Activity>) => {
         activity.value.fitnessPoints = activity.value.measure.value * this.configMap[activity.value.type].fitnessPointsFactor;

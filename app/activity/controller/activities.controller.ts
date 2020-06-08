@@ -45,7 +45,7 @@ router.get('/newer/:limit/:previous', function (req: Request, res: Response) {
 
 router.post('/', function (req: Request, res: Response) {
     activityService
-        .insert(new Activity(req.body), DocumentType.ACTIVITY, getSocialUser(req))
+        .insert(activityService.mapToObject(req.body, true), DocumentType.ACTIVITY, getSocialUser(req))
         .then((inserted: CouchDbDocumentModel<Activity>) => {
             res.send(inserted);
         })

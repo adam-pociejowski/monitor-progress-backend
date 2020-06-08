@@ -1,55 +1,45 @@
 import { CouchDbService } from "../../couchdb/service/couchdb.service";
 import { Goal } from "../model/goal.model";
 import { GoalItem } from "../model/goal-item.model";
-import { Period } from "../model/period.enum";
-import { DateService } from "./date.service";
+import { SocialUser } from "../../user/model/social.user.model";
+import { CouchDbDocumentModel } from "../../couchdb/model/couchdb.document.model";
+import { GoalItemGenerateService } from "./goal-item.generate.service";
+import { GoalItemInitGenerateService } from "./goal-item.init.generate.service";
+import { GoalItemCurrentGenerateService } from "./goal-item.current.generate.service";
 
 const db = require('../../couchdb/config/couchdb.config');
 
 export class GoalService extends CouchDbService<Goal> {
+    private goalItemInitGenerateService: GoalItemGenerateService = new GoalItemInitGenerateService();
+    private goalItemCurrentGenerateService: GoalItemGenerateService = new GoalItemCurrentGenerateService();
 
     constructor() {
         super(db.goalsDbName);
     }
 
-    public static generateCurrentGoalItem = (goal: Goal) => {
-        let now = new Date();
-        switch (goal.period) {
-            case Period.NONE:
-                return GoalService.generateCurrentGoalItemForNonePeriod();
-            case Period.DAILY:
-                return GoalService.generateCurrentGoalItemForDailyPeriod(now);
-            case Period.WEEKLY:
-                return GoalService.generateCurrentGoalItemForWeeklyPeriod(now);
-            case Period.MONTHLY:
-                return GoalService.generateCurrentGoalItemForMonthlyPeriod(now);
-            case Period.YEARLY:
-                return GoalService.generateCurrentGoalItemForYearlyPeriod(now);
-            default:
-                throw new Error(`No goal item generation strategy found for period ${goal.period}`);
-        }
-    }
+    findCurrentGoals = (socialUser: SocialUser) =>
+        this.findAll(socialUser)
+            .then((docs: CouchDbDocumentModel<Goal>[]) => {
+                return docs
+                    .map((doc: CouchDbDocumentModel<Goal>) => {
+                        doc.value.currentGoal.amount = 50;
+                        return doc;
+                    });
+            })
 
-    private static generateCurrentGoalItemForNonePeriod = () =>
-        new GoalItem(null, null)
-
-    private static generateCurrentGoalItemForDailyPeriod = (date: Date) =>
-        new GoalItem(
-            DateService.getBeginOfDay(date),
-            DateService.getEndOfDay(date))
-
-    private static generateCurrentGoalItemForWeeklyPeriod = (date: Date) =>
-        new GoalItem(
-            DateService.getBeginOfWeek(date),
-            DateService.getEndOfWeek(date))
-
-    private static generateCurrentGoalItemForMonthlyPeriod = (date: Date) =>
-        new GoalItem(
-            DateService.getBeginOfMonth(date),
-            DateService.getEndOfMonth(date))
-
-    private static generateCurrentGoalItemForYearlyPeriod = (date: Date) =>
-        new GoalItem(
-            DateService.getBeginOfYear(date),
-            DateService.getEndOfYear(date))
+    mapToObject = (obj: any,
+                   insert: boolean = false) =>
+        new Goal(
+            obj.activityType,
+            obj.period,
+            obj.goalMeasure,
+            obj.goalAmount,
+            obj.creationDate,
+            obj.archived,
+            obj.elapsedGoals
+                .map((item: any) => GoalItem.prepareGoalItem(item)),
+            insert ?
+                this.goalItemInitGenerateService.generate(obj.period) :
+                this.goalItemCurrentGenerateService.generate(obj.period, obj.activityType, obj.currentGoal)
+        )
 }

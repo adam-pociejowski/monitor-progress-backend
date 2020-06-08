@@ -13,7 +13,10 @@ const socialUserService = new SocialUserService();
 
 router.post('/', function (req: Request, res: Response) {
     goalService
-        .insert(new Goal(req.body), DocumentType.GOAL, getSocialUser(req))
+        .insert(
+            goalService.mapToObject(req.body, true),
+            DocumentType.GOAL,
+            getSocialUser(req))
         .then((inserted: CouchDbDocumentModel<Goal>) => {
             res.send(inserted);
         })
@@ -26,7 +29,7 @@ router.post('/', function (req: Request, res: Response) {
 
 router.get('/', function (req: Request, res: Response) {
     goalService
-        .findAll(getSocialUser(req))
+        .findCurrentGoals(getSocialUser(req))
         .then((docs: CouchDbDocumentModel<Goal>[]) => {
             res.send(docs);
         })
